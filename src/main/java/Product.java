@@ -2,27 +2,25 @@ import java.time.LocalDate;
 
 class Product extends Goods{
 
-    private LocalDate date;
-    private int bestBeforeDate;
+    private final LocalDate productionDate;
+    private final int expirationDate;
 
-    public Product(String _name, Float _price, LocalDate _date, int _bestBeforeDate){
+    public Product(String _name, Float _price, LocalDate _productionDate, int _expirationDate){
         super(_name, _price);
-        date = _date;
-        bestBeforeDate = _bestBeforeDate;
+        productionDate = _productionDate;  // Дата изготовления
+        expirationDate = _expirationDate;  // Срок годности
     }
 
     @Override
     public boolean isGood() {
-        int currentDay = LocalDate.now().getDayOfMonth();
-        int theLastDayOfBestBeforeDate = date.getDayOfMonth() + bestBeforeDate;
-        if (currentDay > theLastDayOfBestBeforeDate){
-            return false;
-        }
-        return true;
+        return productionDate.getDayOfYear() + expirationDate >= LocalDate.now().getDayOfYear();
     }
 
     @Override
-    public void getParametrs() {
-        //придумаешь сам??
+    public void getParameters() {
+        printCommonInfo();
+        System.out.printf("Дата изготовления: %s%n", productionDate);
+        System.out.printf("Срок годности: %s дня %n", expirationDate);
+        System.out.printf("Товар годен на текущую дату: %s%n", isGood());
     }
 }
